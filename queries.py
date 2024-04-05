@@ -38,6 +38,7 @@ db_port = '5432'
 
 # Directory Path - Do NOT Modify
 dir_path = os.path.dirname(os.path.realpath(__file__))
+dbexport_path = os.path.join(dir_path, "dbexport.sql")
 
 # Loading the Database after Drop - Do NOT Modify
 #================================================
@@ -66,7 +67,7 @@ def load_database(cursor, conn):
     
     # Import the dbexport.sql database data into this database
     try:
-        command = f'psql -h {host} -U {user} -d {query_database_name} -a -f {os.path.join(dir_path, "dbexport.sql")}'
+        command = f'/opt/homebrew/bin/psql -h {host} -U {user} -d {query_database_name} -a -f "{dbexport_path}"'
         env = {'PGPASSWORD': password}
         subprocess.run(command, shell=True, check=True, env=env)
 
@@ -171,24 +172,24 @@ def Q_1(cursor, conn, execution_time):
     query = """
     SELECT 
         Shot.player_name,
-        AVG(Shot.statsbomb_xg) AS avg_xg
+        ROUND(AVG(Shot.statsbomb_xg), 8) AS avg_xg
     FROM 
-        Shot
+            Shot
     JOIN 
-        Matches ON Shot.match_id = Matches.match_id
+            Matches ON Shot.match_id = Matches.match_id
     JOIN 
-        Competitions ON Matches.competition_id = Competitions.competition_id 
-        AND Matches.season_id = Competitions.season_id
+            Competitions ON Matches.competition_id = Competitions.competition_id 
+            AND Matches.season_id = Competitions.season_id
     WHERE 
-        Competitions.competition_name = 'La Liga' 
-        AND Competitions.season_name = '2020/2021'
-        AND Shot.statsbomb_xg > 0
+            Competitions.competition_name = 'La Liga' 
+            AND Competitions.season_name = '2018/2019'
+            AND Shot.statsbomb_xg > 0
     GROUP BY 
-        Shot.player_name
+            Shot.player_name
     HAVING 
-        COUNT(Shot.event_id) >= 1
+            COUNT(Shot.event_id) >= 1
     ORDER BY 
-        avg_xg DESC;
+            avg_xg DESC;
     """
 
     #==========================================================================
@@ -221,7 +222,7 @@ def Q_2(cursor, conn, execution_time):
         AND Matches.season_id = Competitions.season_id
     WHERE 
         Competitions.competition_name = 'La Liga' 
-        AND Competitions.season_name = '2020/2021'
+        AND Competitions.season_name = '2018/2019'
     GROUP BY 
         Shot.player_name
     HAVING 
