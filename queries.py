@@ -38,7 +38,6 @@ db_port = '5432'
 
 # Directory Path - Do NOT Modify
 dir_path = os.path.dirname(os.path.realpath(__file__))
-dbexport_path = os.path.join(dir_path, "dbexport.sql")
 
 # Loading the Database after Drop - Do NOT Modify
 #================================================
@@ -67,7 +66,7 @@ def load_database(cursor, conn):
     
     # Import the dbexport.sql database data into this database
     try:
-        command = f'/opt/homebrew/bin/psql -h {host} -U {user} -d {query_database_name} -a -f "{dbexport_path}"'
+        command = f'psql -h {host} -U {user} -d {query_database_name} -a -f {os.path.join(dir_path, "dbexport.sql")}'
         env = {'PGPASSWORD': password}
         subprocess.run(command, shell=True, check=True, env=env)
 
