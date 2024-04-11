@@ -181,7 +181,7 @@ def Q_1(cursor, conn, execution_time):
             AND Matches.season_id = Competitions.season_id
     WHERE 
             Competitions.competition_name = 'La Liga' 
-            AND Competitions.season_name = '2018/2019'
+            AND Competitions.season_name = '2020/2021'
             AND Shot.statsbomb_xg > 0
     GROUP BY 
             Shot.player_name
@@ -221,7 +221,7 @@ def Q_2(cursor, conn, execution_time):
         AND Matches.season_id = Competitions.season_id
     WHERE 
         Competitions.competition_name = 'La Liga' 
-        AND Competitions.season_name = '2018/2019'
+        AND Competitions.season_name = '2020/2021'
     GROUP BY 
         Shot.player_name
     HAVING 
